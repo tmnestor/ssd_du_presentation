@@ -1,0 +1,30 @@
+flowchart TD
+    Input[WRE Document Image<br/>Raw pixel data]
+    Input --> VisionEncoder[Vision Encoder<br/>InternViT or Llama]
+
+    VisionEncoder --> VisualEmbed[Visual Embeddings<br/>Image patches]
+
+    VisualEmbed --> Projector[Projector Layer<br/>MLP InternVL3<br/>Cross-attention Llama]
+
+    ExtPrompt[Extraction Prompt<br/>Field instructions] --> TextToken[Text Tokenizer<br/>Token embeddings]
+
+    Projector --> VisualTokens[Visual Tokens<br/>LLM-compatible]
+
+    VisualTokens --> LLMDecoder[LLM Decoder<br/>Transformer]
+    TextToken --> LLMDecoder
+
+    LLMDecoder --> AttentionMech[Attention Mechanism<br/>Visual + Text fusion]
+
+    AttentionMech --> TokenGen[Token Generation<br/>Sequential output]
+
+    TokenGen --> StructuredOutput[Structured Extraction<br/>ABN: 12 345 678 901<br/>TOTAL: $137.50<br/>etc.]
+
+    %% Styling
+    classDef processBox fill:#ffcccc,stroke:#333,stroke-width:2px
+    classDef dataFlow fill:transparent,stroke:transparent,color:#666
+    classDef inputOutput fill:#ccffcc,stroke:#333,stroke-width:2px
+
+    %% Apply styles
+    class Input,StructuredOutput,ExtPrompt inputOutput
+    class VisionEncoder,Projector,LLMDecoder,TokenGen processBox
+    class VisualEmbed,TextToken,VisualTokens,AttentionMech dataFlow
