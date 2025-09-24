@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-from matplotlib.patches import Rectangle, FancyBboxPatch
 import numpy as np
+from matplotlib.patches import FancyBboxPatch, Rectangle
 
 # Set up the figure with modern gradient background
 fig, ax = plt.subplots(figsize=(14, 10), facecolor='white')

@@ -74,7 +74,7 @@ def main():
 
         if result.returncode == 0:
             print(f"✅ Generated PNG diagram: {png_file}")
-            print(f"📊 Diagram features:")
+            print("📊 Diagram features:")
             print("   - Fully transparent data flow boxes (no borders)")
             print("   - Solid process boxes (Vision Encoder, LLM Decoder, etc.)")
             print("   - Clear input/output boxes in green")

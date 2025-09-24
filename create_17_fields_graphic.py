@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-from matplotlib.patches import FancyBboxPatch, Circle
-import numpy as np
+from matplotlib.patches import Circle, FancyBboxPatch
 
 # Set up the figure with a clean, modern style
 plt.style.use('seaborn-v0_8-darkgrid')

@@ -1,35 +1,35 @@
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
 
-# Set up the figure with transparent background
-fig, ax = plt.subplots(figsize=(20, 7), facecolor='none')
-ax.set_xlim(0, 20)
+# Set up the figure with transparent background - narrower to reduce margins
+fig, ax = plt.subplots(figsize=(16, 7), facecolor='none')
+ax.set_xlim(0, 16)
 ax.set_ylim(0, 7)
 ax.axis('off')
 
 # Modern color palette
 colors = {
-    'primary': '#0066CC',      # Blue
+    'primary': '#28A745',      # Green (new color for General Document)
     'secondary': '#FF6B35',    # Orange
     'accent1': '#00D9FF',      # Cyan
     'accent2': '#FFD93D',      # Yellow
-    'dark': '#1A1A2E',         # Dark blue
+    'dark': '#0066CC',         # Corporate blue (moved to header)
     'text': '#2C3E50',         # Dark gray
     'white': '#FFFFFF'
 }
 
-# Title section - expanded for both lines
-title_rect = FancyBboxPatch((1, 5.5), 18, 1.3,
+# Title section - centered with reduced margins
+title_rect = FancyBboxPatch((0.5, 5.5), 15.0, 1.3,
                             boxstyle="round,pad=0.02",
                             facecolor=colors['dark'],
                             edgecolor='none')
 ax.add_patch(title_rect)
-ax.text(10, 6.4, '17 CRITICAL FIELDS', fontsize=28, fontweight='bold',
+ax.text(8, 6.4, '17 CRITICAL FIELDS', fontsize=28, fontweight='bold',
         color='white', ha='center', va='center')
 
-# Subtitle inside the header box
-ax.text(10, 5.9, 'Work-Related Expense Substantiation Requirements',
-        fontsize=16, color=colors['accent1'], ha='center', va='center')
+# Subtitle inside the header box - white color
+ax.text(8, 5.9, 'Work-Related Expense Substantiation Requirements',
+        fontsize=16, color='white', ha='center', va='center')
 
 # Create clean card-style sections
 def create_clean_card(x, y, width, height, title, count, fields, color, icon_num):
@@ -73,87 +73,88 @@ def create_clean_card(x, y, width, height, title, count, fields, color, icon_num
             fontsize=16, fontweight='bold', ha='center', va='center',
             color=color, zorder=11)
 
-    # Field list with bullets - larger text
+    # Field list with bullets - proper spacing from header
     for i, field in enumerate(fields):
-        y_pos = y + height - 0.75 - (i * 0.42)  # Adjusted spacing for larger text
-        # Bullet point
-        bullet = plt.Circle((x + 0.2, y_pos), 0.04,
+        # More space from header, much tighter between items to fit all fields
+        y_pos = y + height - 0.85 - (i * 0.35)  # Reduced spacing to fit all 6 items
+        # Bullet point closer to edge
+        bullet = plt.Circle((x + 0.15, y_pos), 0.04,
                            facecolor=color, alpha=0.7)
         ax.add_patch(bullet)
         # Split field into name and description if colon present
         if ':' in field:
             field_name, field_desc = field.split(':', 1)
-            # Field name in bold - larger
-            ax.text(x + 0.35, y_pos + 0.1, field_name + ':', fontsize=9,
+            # Field name in bold
+            ax.text(x + 0.25, y_pos + 0.08, field_name + ':', fontsize=9,
                     color=colors['text'], va='top', ha='left', fontweight='bold')
-            # Description on same/next line - larger
-            ax.text(x + 0.35, y_pos - 0.1, field_desc.strip(), fontsize=8,
-                    color=colors['text'], va='top', ha='left', alpha=0.85, wrap=True)
+            # Short description on single line
+            ax.text(x + 0.25, y_pos - 0.08, field_desc.strip(), fontsize=8,
+                    color=colors['text'], va='top', ha='left', alpha=0.85)
         else:
             # Field text without description
-            ax.text(x + 0.35, y_pos, field, fontsize=9,
+            ax.text(x + 0.25, y_pos, field, fontsize=10,
                     color=colors['text'], va='center', ha='left')
 
 # Create the four cards with proper spacing
-card_height = 4.0  # Taller cards for larger text
-card_y = 1.5
+card_height = 3.2  # Shorter cards for concise text
+card_y = 1.5  # Higher position
 
-# Card 1: General Document with descriptions
+# Card 1: General Document with short descriptions
 general_fields = [
-    'DOCUMENT_TYPE: Classify as invoice, receipt, or bank statement',
-    'BUSINESS_ABN: Verify legitimate Australian businesses via 11-digit ABN',
-    'SUPPLIER_NAME: Identify the business providing goods/services',
-    'BUSINESS_ADDRESS: Confirm business location for legitimacy checks',
-    'PAYER_NAME: Match against taxpayer records',
-    'PAYER_ADDRESS: Verify taxpayer identity and address consistency'
+    'DOCUMENT_TYPE: Classify document type',
+    'BUSINESS_ABN: Verify legitimate ABN',
+    'SUPPLIER_NAME: Identify supplier',
+    'BUSINESS_ADDRESS: Confirm location',
+    'PAYER_NAME: Match taxpayer records',
+    'PAYER_ADDRESS: Verify address'
 ]
 
-# Card 2: Date & Amount with descriptions
+# Card 2: Date & Amount with short descriptions
 date_amount_fields = [
-    'INVOICE_DATE: Confirm expense within tax year',
-    'STATEMENT_DATE_RANGE: Validate bank statement coverage period',
-    'IS_GST_INCLUDED: Determine GST credit eligibility',
-    'GST_AMOUNT: Calculate claimable GST credits',
-    'TOTAL_AMOUNT: Verify total expense claim amount'
+    'INVOICE_DATE: Confirm tax year',
+    'STATEMENT_DATE_RANGE: Validate period',
+    'IS_GST_INCLUDED: Check GST eligibility',
+    'GST_AMOUNT: Calculate GST credits',
+    'TOTAL_AMOUNT: Verify claim amount'
 ]
 
-# Card 3: Line Items with descriptions
+# Card 3: Line Items with short descriptions
 line_item_fields = [
-    'LINE_ITEM_DESCRIPTIONS: Assess work-related nature of each item',
-    'LINE_ITEM_QUANTITIES: Validate reasonableness of purchases',
-    'LINE_ITEM_PRICES: Check individual item costs',
-    'LINE_ITEM_TOTAL_PRICES: Verify line-item calculations'
+    'LINE_ITEM_DESCRIPTIONS: Check work-related',
+    'LINE_ITEM_QUANTITIES: Validate purchases',
+    'LINE_ITEM_PRICES: Check item costs',
+    'LINE_ITEM_TOTAL_PRICES: Verify calculations'
 ]
 
-# Card 4: Transaction fields with descriptions
+# Card 4: Transaction fields with short descriptions
 transaction_fields = [
-    'TRANSACTION_DATES: Match payments to invoice dates',
-    'TRANSACTION_AMOUNTS_PAID: Confirm actual payment amounts'
+    'TRANSACTION_DATES: Match payments',
+    'TRANSACTION_AMOUNTS_PAID: Confirm amounts'
 ]
 
-# Create wider cards to accommodate descriptions
-create_clean_card(0.5, card_y, 4.8, card_height,
+# Create centered cards
+create_clean_card(0.5, card_y, 3.6, card_height,
                  'General Document', 6,
                  general_fields,
                  colors['primary'], '📄')
 
-create_clean_card(5.5, card_y, 4.8, card_height,
+create_clean_card(4.3, card_y, 3.6, card_height,
                  'Date & Amount', 5,
                  date_amount_fields,
                  colors['secondary'], '📅')
 
-create_clean_card(10.5, card_y, 4.8, card_height,
+create_clean_card(8.1, card_y, 3.6, card_height,
                  'Line Items', 4,
                  line_item_fields,
                  colors['accent1'], '📋')
 
-create_clean_card(15.5, card_y, 3.8, card_height,
+create_clean_card(11.9, card_y, 3.6, card_height,
                  'Transactions', 2,
                  transaction_fields,
                  colors['accent2'], '💳')
 
-# Bottom summary bar with two lines of text
-summary_rect = FancyBboxPatch((0.5, 0.2), 18.8, 1.2,
+# Bottom summary bar with reduced margins
+summary_rect = FancyBboxPatch((0.5, 0.2), 15.0, 1.2,
                               boxstyle="round,pad=0.02",
                               facecolor='#F8F9FA',
                               edgecolor=colors['dark'],
@@ -162,11 +163,11 @@ ax.add_patch(summary_rect)
 
 # Summary text with icons - larger
 benefits_text = '✓ Automated Validation   ✓ Cross-Referencing   ✓ Compliance Checking   ✓ Audit Trail'
-ax.text(10, 0.9, benefits_text, fontsize=13, ha='center', va='center',
+ax.text(8, 0.9, benefits_text, fontsize=13, ha='center', va='center',
         color=colors['dark'], fontweight='bold')
 
 # Additional text at bottom - larger
-ax.text(10, 0.4, 'Complete document capture ensures accurate expense substantiation',
+ax.text(8, 0.4, 'Complete document capture ensures accurate expense substantiation',
         fontsize=12, ha='center', va='center',
         color=colors['text'], style='italic')
 
